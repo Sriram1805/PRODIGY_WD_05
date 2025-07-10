@@ -1,64 +1,57 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+let startTime = 0;
+let elapsedTime = 0;
+let interval = null;
+let running = false;
+
+const display = document.getElementById('display');
+const laps = document.getElementById('laps');
+const toggleBtn = document.getElementById('toggleBtn');
+
+function timeFormat(ms) {
+  const date = new Date(ms);
+  const min = String(date.getUTCMinutes()).padStart(2, '0');
+  const sec = String(date.getUTCSeconds()).padStart(2, '0');
+  const ms10 = String(Math.floor(date.getUTCMilliseconds() / 10)).padStart(2, '0');
+  return `${min}:${sec}:${ms10}`;
 }
 
-.container {
-  background: white;
-  padding: 30px 40px;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  text-align: center;
-  width: 350px;
+function updateTime() {
+  const now = Date.now();
+  const diff = now - startTime + elapsedTime;
+  display.textContent = timeFormat(diff);
 }
 
-h1 {
-  color: #333;
-  margin-bottom: 20px;
-}
+toggleBtn.addEventListener('click', () => {
+  if (!running) {
+    // Start
+    startTime = Date.now();
+    interval = setInterval(updateTime, 10);
+    running = true;
+    toggleBtn.textContent = 'Pause';
+  } else {
+    // Pause
+    clearInterval(interval);
+    elapsedTime += Date.now() - startTime;
+    running = false;
+    toggleBtn.textContent = 'Start';
+  }
+});
 
-#display {
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #222;
-  letter-spacing: 1px;
-}
+document.getElementById('resetBtn').addEventListener('click', () => {
+  clearInterval(interval);
+  startTime = 0;
+  elapsedTime = 0;
+  running = false;
+  display.textContent = '00:00:00';
+  laps.innerHTML = '';
+  toggleBtn.textContent = 'Start'; // Reset toggle text
+});
 
-.buttons button {
-  margin: 8px;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  background: #667eea;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.buttons button:hover {
-  background: #5a67d8;
-  transform: scale(1.05);
-}
-
-#laps {
-  margin-top: 25px;
-  max-height: 150px;
-  overflow-y: auto;
-  text-align: left;
-  padding: 0;
-  list-style: decimal inside;
-}
-
-#laps li {
-  font-size: 16px;
-  padding: 5px;
-  border-bottom: 1px solid #eee;
-}
+document.getElementById('lapBtn').addEventListener('click', () => {
+  if (running) {
+    const lapItem = document.createElement('li');
+    const now = Date.now() - startTime + elapsedTime;
+    lapItem.textContent = timeFormat(now);
+    laps.appendChild(lapItem);
+  }
+});
