@@ -1,35 +1,64 @@
-async function getWeather() {
-  const cityInput = document.getElementById("cityInput").value.trim();
-  const apiKey = "2a6d5ecde5a0e39179356ec80dca7509";
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  if (!cityInput) {
-    alert("Please enter a city name.");
-    return;
-  }
+.container {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 350px;
+}
 
-  const city = encodeURIComponent(cityInput);
-  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
 
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+#display {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #222;
+  letter-spacing: 1px;
+}
 
-    if (data.cod !== 200) {
-      document.getElementById("weatherResult").innerHTML = `<p>❌ City not found. Try a valid Indian city.</p>`;
-      return;
-    }
+.buttons button {
+  margin: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background: #667eea;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
 
-    const weatherHtml = `
-      <h3>${data.name}, ${data.sys.country}</h3>
-      <p><strong>🌡 Temperature:</strong> ${data.main.temp} °C</p>
-      <p><strong>🌤 Condition:</strong> ${data.weather[0].description}</p>
-      <p><strong>💧 Humidity:</strong> ${data.main.humidity}%</p>
-      <p><strong>💨 Wind Speed:</strong> ${data.wind.speed} m/s</p>
-    `;
+.buttons button:hover {
+  background: #5a67d8;
+  transform: scale(1.05);
+}
 
-    document.getElementById("weatherResult").innerHTML = weatherHtml;
-  } catch (error) {
-    console.error("Error fetching weather:", error);
-    document.getElementById("weatherResult").innerHTML = `<p>⚠️ Error fetching data. Check your internet or API key.</p>`;
-  }
+#laps {
+  margin-top: 25px;
+  max-height: 150px;
+  overflow-y: auto;
+  text-align: left;
+  padding: 0;
+  list-style: decimal inside;
+}
+
+#laps li {
+  font-size: 16px;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
 }
