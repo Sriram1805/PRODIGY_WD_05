@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Indian Weather App</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Stopwatch Web App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="weather-container">
-    <h1>🌦 Indian Weather App</h1>
-    <input type="text" id="cityInput" placeholder="Enter Indian city name" />
-    <button onclick="getWeather()">Get Weather</button>
-    <div class="weather-result" id="weatherResult"></div>
+  <div class="container">
+    <h1>⏱ Stopwatch</h1>
+    <div id="display">00:00:00</div>
+
+    <div class="buttons">
+      <button id="toggleBtn">Start</button>
+      <button id="resetBtn">Reset</button>
+      <button id="lapBtn">Lap</button>
+    </div>
+
+    <ul id="laps"></ul>
   </div>
 
   <script src="script.js"></script>
